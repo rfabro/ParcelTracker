@@ -8,11 +8,11 @@ using ParcelTracker.Infrastructure.Contexts;
 
 #nullable disable
 
-namespace ParcelTracker.Infrastructure.Migrations.Notifications
+namespace ParcelTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(NotificationsContext))]
-    [Migration("20240516133151_InitialVersion")]
-    partial class InitialVersion
+    [Migration("20240516201126_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

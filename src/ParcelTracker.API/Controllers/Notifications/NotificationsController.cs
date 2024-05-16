@@ -15,6 +15,7 @@ namespace ParcelTracker.API.Controllers.Notifications;
 public class NotificationsController : ControllerBase
 {
     private const string ControllerTagName = "Notifications";
+    private const string ModuleName = nameof(NotificationsController);
 
     private readonly ILogger<NotificationsController> _logger;
     private readonly IMapper _mapper;
@@ -31,22 +32,25 @@ public class NotificationsController : ControllerBase
     /// Get all notifications
     /// </summary>
     /// <returns>List of notifications</returns>
-    [HttpGet("GetAllNotifications", Name = "GetAllNotifications")]
+    [HttpGet]
     [ProducesResponseType((int) HttpStatusCode.BadRequest)]
     [ProducesResponseType((int) HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(BaseResult<NotificationModel>), (int) HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BaseResult<NotificationModel>), (int) HttpStatusCode.InternalServerError)]
     [SwaggerOperation(Tags = new[] { ControllerTagName })]
-    public async Task<BaseResult<NotificationModel>> GetAllNotifications()
+    public async Task<BaseResult<NotificationModel>> GetAll()
     {
         try
         {
+            _logger.LogDebug($"{ModuleName}: Request: GetAllNotifications");
             var getResult = await _notificationService.GetAllNotifications();
             var parsedResult = getResult.Select(n => _mapper.Map<NotificationModel>(n));
+            _logger.LogDebug($"{ModuleName}: Response: GetAllNotifications success");
             return new BaseResult<NotificationModel>(parsedResult);
         }
         catch (Exception ex)
         {
+            _logger.LogError($"{ModuleName}: Error on GetAllNotifications. {ex?.Message ?? ex.InnerException?.Message}");
             return new BaseResult<NotificationModel>(ex.Message);
         }
     }
@@ -56,25 +60,32 @@ public class NotificationsController : ControllerBase
     /// </summary>
     /// <param name="clientId">The client Id to query</param>
     /// <returns>List of notifications</returns>
-    [HttpGet("GetAllByClientId", Name = "GetAllByClientId")]
+    [HttpGet("{clientId}")]
     [ProducesResponseType((int) HttpStatusCode.BadRequest)]
     [ProducesResponseType((int) HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(BaseResult<NotificationModel>), (int) HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BaseResult<NotificationModel>), (int) HttpStatusCode.InternalServerError)]
     [SwaggerOperation(Tags = new[] { ControllerTagName })]
-    public async Task<BaseResult<NotificationModel>> GetAllNotificationsByClientId([FromQuery]int clientId)
+    public async Task<BaseResult<NotificationModel>> GetAllByClientId([FromQuery]int clientId)
     {
         try
         {
+            _logger.LogDebug($"{ModuleName}: Request: GetAllByClientId");
+
             if (!ModelState.IsValid)
+            {
+                _logger.LogError($"{ModuleName}: Error on GetAllByClientId. {ValidationHelper.GetValidationErrors(ModelState)}");
                 return new BaseResult<NotificationModel>(ValidationHelper.GetValidationErrors(ModelState));
+            }
 
             var getResult = await _notificationService.GetAllByClientId(clientId);
             var parsedResult = getResult.Select(n => _mapper.Map<NotificationModel>(n));
+            _logger.LogDebug($"{ModuleName}: Response: GetAllByClientId success");
             return new BaseResult<NotificationModel>(parsedResult);
         }
         catch (Exception ex)
         {
+            _logger.LogError($"{ModuleName}: Error on GetAllByClientId. {ex?.Message ?? ex.InnerException?.Message}");
             return new BaseResult<NotificationModel>(ex.Message);
         }
     }
@@ -92,16 +103,24 @@ public class NotificationsController : ControllerBase
     {
         try
         {
+            _logger.LogDebug($"{ModuleName}: Request: CreateNewDelivery");
+
             if (!ModelState.IsValid)
+            {
+                _logger.LogError($"{ModuleName}: Error on CreateNewDelivery. {ValidationHelper.GetValidationErrors(ModelState)}");
                 return new BaseResult<NotificationModel>(ValidationHelper.GetValidationErrors(ModelState));
+            }
 
             var createResult = await _notificationService.CreateDelivery(modelBody.ClientId,
                 modelBody.ReferenceId);
             var parsedResult = _mapper.Map<NotificationModel>(createResult);
+
+            _logger.LogDebug($"{ModuleName}: Response: CreateNewDelivery success");
             return new BaseResult<NotificationModel>(parsedResult);
         }
         catch (Exception ex)
         {
+            _logger.LogError($"{ModuleName}: Error on CreateNewDelivery. {ex?.Message ?? ex.InnerException?.Message}");
             return new BaseResult<NotificationModel>(ex.Message);
         }
     }
@@ -119,16 +138,23 @@ public class NotificationsController : ControllerBase
     {
         try
         {
+            _logger.LogDebug($"{ModuleName}: Request: CreateNewPickup");
+
             if (!ModelState.IsValid)
+            {
+                _logger.LogError($"{ModuleName}: Error on CreateNewPickup. {ValidationHelper.GetValidationErrors(ModelState)}");
                 return new BaseResult<NotificationModel>(ValidationHelper.GetValidationErrors(ModelState));
+            }
 
             var createResult = await _notificationService.CreatePickup(modelBody.ClientId,
                 modelBody.ReferenceId);
             var parsedResult = _mapper.Map<NotificationModel>(createResult);
+            _logger.LogDebug($"{ModuleName}: Response: CreateNewPickup success");
             return new BaseResult<NotificationModel>(parsedResult);
         }
         catch (Exception ex)
         {
+            _logger.LogError($"{ModuleName}: Error on CreateNewPickup. {ex?.Message ?? ex.InnerException?.Message}");
             return new BaseResult<NotificationModel>(ex.Message);
         }
     }
@@ -146,16 +172,24 @@ public class NotificationsController : ControllerBase
     {
         try
         {
+            _logger.LogDebug($"{ModuleName}: Request: CreateNewReminder");
+
             if (!ModelState.IsValid)
+            {
+                _logger.LogError($"{ModuleName}: Error on CreateNewReminder. {ValidationHelper.GetValidationErrors(ModelState)}");
                 return new BaseResult<NotificationModel>(ValidationHelper.GetValidationErrors(ModelState));
+            }
 
             var createResult = await _notificationService.CreateReminder(modelBody.ClientId,
                 modelBody.ReferenceId);
             var parsedResult = _mapper.Map<NotificationModel>(createResult);
+
+            _logger.LogDebug($"{ModuleName}: Response: CreateNewReminder success");
             return new BaseResult<NotificationModel>(parsedResult);
         }
         catch (Exception ex)
         {
+            _logger.LogError($"{ModuleName}: Error on CreateNewReminder. {ex?.Message ?? ex.InnerException?.Message}");
             return new BaseResult<NotificationModel>(ex.Message);
         }
     }

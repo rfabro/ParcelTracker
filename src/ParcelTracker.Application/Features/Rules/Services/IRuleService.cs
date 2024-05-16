@@ -7,5 +7,5 @@ public interface IRuleService
     Task<IEnumerable<Rule>> GetAllRules();
     Task<IEnumerable<Rule>> GetAllByClientId(int clientId);
     Task<Rule> CreateRule(Rule rule);
-    Task<Rule> UpdateConfiguration(Rule rule);
+    Task<Rule> UpdateRule(Rule rule);
 }

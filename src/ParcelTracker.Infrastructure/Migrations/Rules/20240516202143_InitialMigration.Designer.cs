@@ -8,11 +8,11 @@ using ParcelTracker.Infrastructure.Contexts;
 
 #nullable disable
 
-namespace ParcelTracker.Infrastructure.Migrations
+namespace ParcelTracker.Infrastructure.Migrations.Rules
 {
     [DbContext(typeof(RulesContext))]
-    [Migration("20240516133136_InitialVersion")]
-    partial class InitialVersion
+    [Migration("20240516202143_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,6 +29,14 @@ namespace ParcelTracker.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("DateCreated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DefaultEmailFrom")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DefaultEmailTo")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("RuleDescription")

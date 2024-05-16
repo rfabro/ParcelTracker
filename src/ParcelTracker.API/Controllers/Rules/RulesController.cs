@@ -15,6 +15,7 @@ namespace ParcelTracker.API.Controllers.Rules;
 public class RulesController : ControllerBase
 {
     private const string ControllerTagName = "Rules";
+    private const string ModuleName = nameof(RulesController);
 
     private readonly ILogger<RulesController> _logger;
     private readonly IMapper _mapper;
@@ -31,22 +32,25 @@ public class RulesController : ControllerBase
     /// Get all rules
     /// </summary>
     /// <returns>List of Rules</returns>
-    [HttpGet("GetAllRules", Name = "Get All Rules")]
+    [HttpGet]
     [ProducesResponseType((int) HttpStatusCode.BadRequest)]
     [ProducesResponseType((int) HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(BaseResult<RuleModel>), (int) HttpStatusCode.OK)]
     [ProducesResponseType(typeof(BaseResult<RuleModel>), (int) HttpStatusCode.InternalServerError)]
     [SwaggerOperation(Tags = new[] { ControllerTagName })]
-    public async Task<BaseResult<RuleModel>> GetAllRules()
+    public async Task<BaseResult<RuleModel>> GetAll()
     {
         try
         {
+            _logger.LogDebug($"{ModuleName}: Request: GetAllRules");
             var getResult = await _rulesService.GetAllRules();
             var parsedResult = getResult.Select(n => _mapper.Map<RuleModel>(n));
+            _logger.LogDebug($"{ModuleName}: Response: GetAllRules success");
             return new BaseResult<RuleModel>(parsedResult);
         }
         catch (Exception ex)
         {
+            _logger.LogError($"{ModuleName}: Error on GetAllRules. {ex?.Message ?? ex.InnerException?.Message}");
             return new BaseResult<RuleModel>(ex.Message);
         }
     }
@@ -64,8 +68,12 @@ public class RulesController : ControllerBase
     {
         try
         {
+            _logger.LogDebug($"{ModuleName}: Request: CreateRule");
             if (!ModelState.IsValid)
+            {
+                _logger.LogError($"{ModuleName}: Error on CreateRule. {ValidationHelper.GetValidationErrors(ModelState)}");
                 return new BaseResult<RuleModel>(ValidationHelper.GetValidationErrors(ModelState));
+            }
             var rule = _mapper.Map<Rule>(modelBody);
             var createResult = await _rulesService.CreateRule(rule);
             var parsedResult = _mapper.Map<RuleModel>(createResult);
@@ -73,6 +81,7 @@ public class RulesController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logger.LogError($"{ModuleName}: Error on CreateRule. {ex?.Message ?? ex.InnerException?.Message}");
             return new BaseResult<RuleModel>(ex.Message);
         }
     }

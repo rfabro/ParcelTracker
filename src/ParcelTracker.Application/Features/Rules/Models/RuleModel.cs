@@ -7,4 +7,8 @@ public class RuleModel
     public string Rule { get; set; }
 
     public string RuleDescription { get; set; }
+
+    public string DefaultEmailFrom { get; set; }
+
+    public string DefaultEmailTo { get; set; }
 }

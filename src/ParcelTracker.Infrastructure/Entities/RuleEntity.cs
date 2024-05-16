@@ -17,6 +17,11 @@ public class RuleEntity : Entity
     [Required]
     public string RuleName { get; set; }
 
-    [Required]
     public string RuleDescription { get; set; }
+
+    [Required]
+    public string DefaultEmailFrom { get; set; }
+
+    [Required]
+    public string DefaultEmailTo { get; set; }
 }

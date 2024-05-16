@@ -1,18 +1,21 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using ParcelTracker.Application.Abstractions;
-using ParcelTracker.Application.Features.Rules.Services;
 using ParcelTracker.Core.Rules;
 using ParcelTracker.Infrastructure.Entities;
 
-namespace ParcelTracker.Application.Features.Configuration.Services;
+namespace ParcelTracker.Application.Features.Rules.Services;
 
 public class RuleService : IRuleService
 {
+    private readonly ILogger<RuleService> _logger;
     private readonly IAsyncRepository<RuleEntity> _repository;
     private readonly IMapper _mapper;
+    private const string ModuleName = nameof(RuleRepository);
 
-    public RuleService(IAsyncRepository<RuleEntity> repository, IMapper mapper)
+    public RuleService(ILogger<RuleService> logger, IAsyncRepository<RuleEntity> repository, IMapper mapper)
     {
+        _logger = logger;
         _repository = repository;
         _mapper = mapper;
     }
@@ -34,17 +37,23 @@ public class RuleService : IRuleService
     public async Task<Rule> CreateRule(Rule rule)
     {
         if (rule == null)
-            return null;
+        {
+            _logger.LogError($"{ModuleName}: CreateRule: rule is null");
+            return rule;
+        }
 
         var newEntity = _mapper.Map<RuleEntity>(rule);
         await _repository.AddAsync(newEntity);
         return _mapper.Map<Rule>(rule);
     }
 
-    public async Task<Rule> UpdateConfiguration(Rule rule)
+    public async Task<Rule> UpdateRule(Rule rule)
     {
         if (rule == null)
-            return null;
+        {
+            _logger.LogError($"{ModuleName}: UpdateRule: rule is null");
+            return rule;
+        }
 
         var existingEntity = _mapper.Map<RuleEntity>(rule);
         var existingResult = await _repository.GetAsync(c => c.ClientId == existingEntity.ClientId);
@@ -55,6 +64,6 @@ public class RuleService : IRuleService
             return _mapper.Map<Rule>(existingResult);
         }
 
-        return null;
+        return rule;
     }
 }

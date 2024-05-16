@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ParcelTracker.Infrastructure.Migrations.Notifications
+namespace ParcelTracker.Infrastructure.Migrations
 {
-    public partial class InitialVersion : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

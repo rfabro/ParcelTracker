@@ -11,6 +11,7 @@ public class NotificationRepository : IAsyncRepository<NotificationEntity>
 {
     private readonly ILogger<NotificationRepository> _logger;
     private readonly NotificationsContext _dbContext;
+    private const string ModuleName = nameof(NotificationRepository);
 
     public NotificationRepository(ILogger<NotificationRepository> logger, NotificationsContext dbContext)
     {
@@ -25,9 +26,9 @@ public class NotificationRepository : IAsyncRepository<NotificationEntity>
             var result = await _dbContext.Notifications.FirstOrDefaultAsync(predicate);
             return result;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e);
+            _logger.LogError($"{ModuleName}: Error on GetAsync. {ex?.Message ?? ex.InnerException?.Message}");
             throw;
         }
     }
@@ -39,9 +40,9 @@ public class NotificationRepository : IAsyncRepository<NotificationEntity>
             var result = await _dbContext.Notifications.ToListAsync();
             return result;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e);
+            _logger.LogError($"{ModuleName}: Error on GetAllAsync. {ex?.Message ?? ex.InnerException?.Message}");
             throw;
         }
     }
@@ -53,9 +54,9 @@ public class NotificationRepository : IAsyncRepository<NotificationEntity>
             var result = await _dbContext.Notifications.Where(predicate).ToListAsync();
             return result;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e);
+            _logger.LogError($"{ModuleName}: Error on GetAllAsync. {ex?.Message ?? ex.InnerException?.Message}");
             throw;
         }
     }
@@ -67,9 +68,9 @@ public class NotificationRepository : IAsyncRepository<NotificationEntity>
             await _dbContext.Notifications.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e);
+            _logger.LogError($"{ModuleName}: Error on AddAsync. {ex?.Message ?? ex.InnerException?.Message}");
             throw;
         }
     }
@@ -78,16 +79,17 @@ public class NotificationRepository : IAsyncRepository<NotificationEntity>
     {
         try
         {
-            var exists = await _dbContext.Notifications.FindAsync(entity);
-            if (exists != null)
+            var existingNotification = await _dbContext.Notifications.FindAsync(entity);
+            if (existingNotification != null)
             {
+                _logger.LogInformation($"{ModuleName}: UpdateAsync. Notification exists for {existingNotification.NotificationId}");
                 _dbContext.Entry(entity).State = EntityState.Modified;
                 await _dbContext.SaveChangesAsync();
             }
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e);
+            _logger.LogError($"{ModuleName}: Error on UpdateAsync. {ex?.Message ?? ex.InnerException?.Message}");
             throw;
         }
     }

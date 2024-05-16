@@ -7,7 +7,7 @@ using ParcelTracker.Infrastructure.Contexts;
 
 #nullable disable
 
-namespace ParcelTracker.Infrastructure.Migrations
+namespace ParcelTracker.Infrastructure.Migrations.Rules
 {
     [DbContext(typeof(RulesContext))]
     partial class RulesContextModelSnapshot : ModelSnapshot
@@ -27,6 +27,14 @@ namespace ParcelTracker.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("DateCreated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DefaultEmailFrom")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DefaultEmailTo")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("RuleDescription")

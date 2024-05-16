@@ -7,7 +7,7 @@ using ParcelTracker.Infrastructure.Contexts;
 
 #nullable disable
 
-namespace ParcelTracker.Infrastructure.Migrations.Notifications
+namespace ParcelTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(NotificationsContext))]
     partial class NotificationsContextModelSnapshot : ModelSnapshot

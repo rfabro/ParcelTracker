@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ParcelTracker.Infrastructure.Migrations
+namespace ParcelTracker.Infrastructure.Migrations.Rules
 {
-    public partial class InitialVersion : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,6 +18,8 @@ namespace ParcelTracker.Infrastructure.Migrations
                     ClientId = table.Column<int>(type: "INTEGER", nullable: false),
                     RuleName = table.Column<string>(type: "TEXT", nullable: false),
                     RuleDescription = table.Column<string>(type: "TEXT", nullable: false),
+                    DefaultEmailFrom = table.Column<string>(type: "TEXT", nullable: false),
+                    DefaultEmailTo = table.Column<string>(type: "TEXT", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
