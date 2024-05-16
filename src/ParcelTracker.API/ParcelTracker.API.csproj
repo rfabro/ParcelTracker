@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <LangVersion>10</LangVersion>
+        <UserSecretsId>c50bb04e-1cfe-49c2-9235-32d3dec15ebd</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,12 +17,6 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.30" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
     </ItemGroup>
 
     <ItemGroup>
