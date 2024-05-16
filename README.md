@@ -12,7 +12,7 @@ Backend Developer Coding Test for Parcel Tracker
 - Logic to send email on a rule per Client ID
 - Unit tests on `NotificationsController`, particularly for creating notifications (delivery/pickup/reminder)
 
-### Start
+### Setup
 To create the database, switch your directory to `.\ParcelTracker\API` and run the following:
 
 ```sh
@@ -24,6 +24,10 @@ Go to `appsettings.json` and edit the value of the config `SendGridApiKey`. Prov
 
 Once done, run the webapi and go to: https://localhost:7169/swagger/index.html
 to view the Swagger endpoint.
+
+Add rules using the https://localhost:7169/api/Rules/Rule endpoint. To enable the rule 
+of sending the email on a later time as indicated in coding test, add a rule with a 
+`RuleName` of "SendRule2".
 
 ### Assumptions
 For the email sending to work, a valid SendGrid api key is required. 
