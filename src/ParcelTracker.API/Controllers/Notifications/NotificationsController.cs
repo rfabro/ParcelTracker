@@ -146,7 +146,7 @@ public class NotificationsController : ControllerBase
                 return new BaseResult<NotificationModel>(ValidationHelper.GetValidationErrors(ModelState));
             }
 
-            var createResult = await _notificationService.CreatePickup(modelBody.ClientId,
+            var createResult = await _notificationService.CreateNewPickup(modelBody.ClientId,
                 modelBody.ReferenceId);
             var parsedResult = _mapper.Map<NotificationModel>(createResult);
             _logger.LogDebug($"{ModuleName}: Response: CreateNewPickup success");

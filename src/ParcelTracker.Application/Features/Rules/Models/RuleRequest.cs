@@ -12,8 +12,8 @@ public class RuleRequest : IValidatableObject
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        if ((ClientId != 1) && ClientId != 2)
-            yield return new ValidationResult($"{nameof(ClientId)} must be either 1 or 2. Provided value is {ClientId}");
+        if (ClientId <= 0)
+            yield return new ValidationResult($"{nameof(ClientId)} has invalid value");
 
         if (string.IsNullOrEmpty(RuleName))
             yield return new ValidationResult($"{nameof(RuleName)} must have a value");

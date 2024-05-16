@@ -67,7 +67,7 @@ public class NotificationService : INotificationService
         return notification;
     }
 
-    public async Task<Core.Notifications.Notification> CreatePickup(int clientId, string referenceId)
+    public async Task<Core.Notifications.Notification> CreateNewPickup(int clientId, string referenceId)
     {
         var notification = new Core.Notifications.Notification()
         {
