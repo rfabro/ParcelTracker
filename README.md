@@ -1,7 +1,3 @@
-
-
----
-
 ### Summary
 
 Backend Developer Coding Test for Parcel Tracker
