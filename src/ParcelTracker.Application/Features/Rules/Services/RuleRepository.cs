@@ -5,24 +5,24 @@ using ParcelTracker.Application.Abstractions;
 using ParcelTracker.Infrastructure.Contexts;
 using ParcelTracker.Infrastructure.Entities;
 
-namespace ParcelTracker.Application.Features.Notification.Services;
+namespace ParcelTracker.Application.Features.Rules.Services;
 
-public class NotificationRepository : IAsyncRepository<NotificationEntity>
+public class RuleRepository : IAsyncRepository<RuleEntity>
 {
-    private readonly ILogger<NotificationRepository> _logger;
-    private readonly NotificationsContext _dbContext;
+    private readonly ILogger<RuleRepository> _logger;
+    private readonly RulesContext _dbContext;
 
-    public NotificationRepository(ILogger<NotificationRepository> logger, NotificationsContext dbContext)
+    public RuleRepository(ILogger<RuleRepository> logger, RulesContext dbContext)
     {
         _logger = logger;
         _dbContext = dbContext;
     }
 
-    public async Task<NotificationEntity> GetAsync(Expression<Func<NotificationEntity, bool>> predicate)
+    public async Task<RuleEntity> GetAsync(Expression<Func<RuleEntity, bool>> predicate)
     {
         try
         {
-            var result = await _dbContext.Notifications.FirstOrDefaultAsync(predicate);
+            var result = await _dbContext.Rules.FirstOrDefaultAsync(predicate);
             return result;
         }
         catch (Exception e)
@@ -32,11 +32,11 @@ public class NotificationRepository : IAsyncRepository<NotificationEntity>
         }
     }
 
-    public async Task<List<NotificationEntity>> GetAllAsync()
+    public async Task<List<RuleEntity>> GetAllAsync()
     {
         try
         {
-            var result = await _dbContext.Notifications.ToListAsync();
+            var result = await _dbContext.Rules.ToListAsync();
             return result;
         }
         catch (Exception e)
@@ -46,11 +46,11 @@ public class NotificationRepository : IAsyncRepository<NotificationEntity>
         }
     }
 
-    public async Task<List<NotificationEntity>> GetAllAsync(Expression<Func<NotificationEntity, bool>> predicate)
+    public async Task<List<RuleEntity>> GetAllAsync(Expression<Func<RuleEntity, bool>> predicate)
     {
         try
         {
-            var result = await _dbContext.Notifications.Where(predicate).ToListAsync();
+            var result = await _dbContext.Rules.Where(predicate).ToListAsync();
             return result;
         }
         catch (Exception e)
@@ -60,11 +60,11 @@ public class NotificationRepository : IAsyncRepository<NotificationEntity>
         }
     }
 
-    public async Task AddAsync(NotificationEntity entity)
+    public async Task AddAsync(RuleEntity entity)
     {
         try
         {
-            await _dbContext.Notifications.AddAsync(entity);
+            await _dbContext.Rules.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
         }
         catch (Exception e)
@@ -74,11 +74,11 @@ public class NotificationRepository : IAsyncRepository<NotificationEntity>
         }
     }
 
-    public async Task UpdateAsync(NotificationEntity entity)
+    public async Task UpdateAsync(RuleEntity entity)
     {
         try
         {
-            var exists = await _dbContext.Notifications.FindAsync(entity);
+            var exists = await _dbContext.Rules.FindAsync(entity);
             if (exists != null)
             {
                 _dbContext.Entry(entity).State = EntityState.Modified;

@@ -12,4 +12,6 @@ public interface IAsyncRepository<T> where T : Entity
     Task<List<T>> GetAllAsync(Expression<Func<T, bool>> predicate);
 
     Task AddAsync(T entity);
+
+    Task UpdateAsync(T entity);
 }

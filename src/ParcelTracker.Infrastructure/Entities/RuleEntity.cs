@@ -4,19 +4,19 @@ using ParcelTracker.Core.Abstractions;
 
 namespace ParcelTracker.Infrastructure.Entities;
 
-[Table("Notifications")]
-public class NotificationEntity : Entity
+[Table("Rules")]
+public class RuleEntity : Entity
 {
     [Key]
     [Required]
-    public long NotificationId { get; set; }
+    public long RuleId { get; set; }
 
     [Required]
     public int ClientId { get; set; }
 
     [Required]
-    public int NotificationType { get; set; }
+    public string RuleName { get; set; }
 
     [Required]
-    public string ReferenceId { get; set; }
+    public string RuleDescription { get; set; }
 }

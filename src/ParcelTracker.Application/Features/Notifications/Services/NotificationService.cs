@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ParcelTracker.Application.Abstractions;
-using ParcelTracker.Application.Features.Notifications.Models;
 using ParcelTracker.Core.Notifications;
 using ParcelTracker.Infrastructure.Entities;
 
@@ -17,29 +16,30 @@ public class NotificationService : INotificationService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<NotificationModel>> GetAllByClientId(string clientId, bool includesDeleted)
+    public async Task<IEnumerable<Core.Notifications.Notification>> GetAllNotifications()
     {
-        // return new List<NotificationDto>()
-        // {
-        //     new NotificationDto() { ClientId = 1 },
-        //     new NotificationDto() { ClientId = 2 }
-        // };
-
         var result = await _repository.GetAllAsync();
-        var mappedResult = result.Select(n => _mapper.Map<NotificationModel>(n));
+        var mappedResult = result.Select(n => _mapper.Map<Core.Notifications.Notification>(n));
         return mappedResult;
     }
 
-    public async Task<NotificationModel> CreateNotification(Notification notification)
+    public async Task<IEnumerable<Core.Notifications.Notification>> GetAllByClientId(int clientId)
+    {
+        var result = await _repository.GetAllAsync(n => n.ClientId == clientId);
+        var mappedResult = result.Select(n => _mapper.Map<Core.Notifications.Notification>(n));
+        return mappedResult;
+    }
+
+    public async Task<Core.Notifications.Notification> CreateNotification(Core.Notifications.Notification notification)
     {
         var entity = _mapper.Map<NotificationEntity>(notification);
         await _repository.AddAsync(entity);
-        return _mapper.Map<NotificationModel>(notification);
+        return _mapper.Map<Core.Notifications.Notification>(notification);
     }
 
-    public async Task<NotificationModel> CreateDelivery(int clientId, string referenceId)
+    public async Task<Core.Notifications.Notification> CreateDelivery(int clientId, string referenceId)
     {
-        var notification = new Notification()
+        var notification = new Core.Notifications.Notification()
         {
             NotificationType = NotificationType.Delivery,
             ReferenceId = referenceId,
@@ -48,9 +48,9 @@ public class NotificationService : INotificationService
         return await CreateNotification(notification);
     }
 
-    public async Task<NotificationModel> CreatePickup(int clientId, string referenceId)
+    public async Task<Core.Notifications.Notification> CreatePickup(int clientId, string referenceId)
     {
-        var notification = new Notification()
+        var notification = new Core.Notifications.Notification()
         {
             NotificationType = NotificationType.Pickup,
             ReferenceId = referenceId,
@@ -59,9 +59,9 @@ public class NotificationService : INotificationService
         return await CreateNotification(notification);
     }
 
-    public async Task<NotificationModel> CreateReminder(int clientId, string referenceId)
+    public async Task<Core.Notifications.Notification> CreateReminder(int clientId, string referenceId)
     {
-        var notification = new Notification()
+        var notification = new Core.Notifications.Notification()
         {
             NotificationType = NotificationType.Reminder,
             ReferenceId = referenceId,

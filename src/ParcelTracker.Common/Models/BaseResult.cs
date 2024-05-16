@@ -3,29 +3,28 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ParcelTracker.Common.Models;
 
-public class BaseDomainResult<T>
+public class BaseResult<T>
 {
     public T Result { get; set; }
-    public IEnumerable<T> ResultList { get; set; }
-
+    public IEnumerable<T> Results { get; set; }
     public ICollection<ValidationResult> Errors { get; set; }
 
-    public BaseDomainResult(T obj)
+    public BaseResult(T obj)
     {
         Result = obj;
     }
 
-    public BaseDomainResult(IEnumerable<T> obj)
+    public BaseResult(IEnumerable<T> obj)
     {
-        ResultList = obj;
+        Results = obj;
     }
 
-    public BaseDomainResult(ICollection<ValidationResult> results)
+    public BaseResult(ICollection<ValidationResult> results)
     {
         Errors = results;
     }
 
-    public BaseDomainResult(ValidationResult result)
+    public BaseResult(ValidationResult result)
     {
         Errors = new Collection<ValidationResult>
         {
@@ -33,7 +32,7 @@ public class BaseDomainResult<T>
         };
     }
 
-    public BaseDomainResult(T obj, ValidationResult result)
+    public BaseResult(T obj, ValidationResult result)
     {
         Result = obj;
         Errors = new Collection<ValidationResult>
@@ -42,13 +41,13 @@ public class BaseDomainResult<T>
         };
     }
 
-    public BaseDomainResult(T obj, IEnumerable<ValidationResult> results)
+    public BaseResult(T obj, IEnumerable<ValidationResult> results)
     {
         Result = obj;
         Errors = results?.ToList();
     }
 
-    public BaseDomainResult(string errorMsg)
+    public BaseResult(string errorMsg)
     {
         Errors = new Collection<ValidationResult>
         {

@@ -1,13 +1,11 @@
-﻿using ParcelTracker.Application.Features.Notifications.Models;
-using ParcelTracker.Core.Notifications;
-
-namespace ParcelTracker.Application.Features.Notifications.Services;
+﻿namespace ParcelTracker.Application.Features.Notifications.Services;
 
 public interface INotificationService
 {
-    Task<IEnumerable<NotificationModel>> GetAllByClientId(string clientId, bool includesDeleted);
-    Task<NotificationModel> CreateNotification(Notification notification);
-    Task<NotificationModel> CreateDelivery(int clientId, string referenceId);
-    Task<NotificationModel> CreatePickup(int clientId, string referenceId);
-    Task<NotificationModel> CreateReminder(int clientId, string referenceId);
+    Task<IEnumerable<Core.Notifications.Notification>> GetAllNotifications();
+    Task<IEnumerable<Core.Notifications.Notification>> GetAllByClientId(int clientId);
+    Task<Core.Notifications.Notification> CreateNotification(Core.Notifications.Notification notification);
+    Task<Core.Notifications.Notification> CreateDelivery(int clientId, string referenceId);
+    Task<Core.Notifications.Notification> CreatePickup(int clientId, string referenceId);
+    Task<Core.Notifications.Notification> CreateReminder(int clientId, string referenceId);
 }
